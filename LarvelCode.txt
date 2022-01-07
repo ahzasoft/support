@@ -1,0 +1,119 @@
+
+
+####  Message to conferm
+ function deleteConfirm(row)
+        {
+            $.MessageBox({
+                buttonDone  : "Yes",
+                buttonFail  : "No",
+                message     : "هل أنت متأكد من حذف العيادة؟",
+                speed       : 500   // delay time
+            }).done(function() {
+
+                var _token = $("input[name='_token']").val();
+                $.ajax({
+                    url: "{{ route('deleteclinic') }}",
+                    type:'POST',
+                    data: {
+                        _token:_token
+                        ,clinicid:row
+
+                    },
+                    success: function(data) {
+                              alert(data);
+                    }
+                });
+
+        });
+        }
+###################### call ajax ######
+1- add route as useal
+2- add controller
+3- add blade
+
+      $.ajax({
+             url: "{{ route('deleteclinic') }}",
+             type:'POST',
+             data: {
+                 _token:_token
+                 ,clinicid:row
+
+             },
+             success: function(data) {
+                       alert(data);
+             }
+          });
+
+################## delete table row by id ####################
+ var drow = document.getElementById(row);
+     drow.parentNode.removeChild(drow);
+
+
+########## File system ###############
+
+
+// delet file if exists
+                $file='images/clinic/'.$clinic->logo;
+                if (file_exists($file) && !empty($clinic->logo)) {
+                    unlink($file);
+                }
+#################### DataBase ###########################
+ Retrieve the first model matching the query constraints...
+$flight = App\Models\Flight::where('active', 1)->first();
+$flights = App\Models\Flight::find([1, 2, 3]);
+
+$count = App\Models\Flight::where('active', 1)->count();
+
+$max = App\Models\Flight::where('active', 1)->max('price');
+
+##### add new data #####
+insert new data
+ $user= User::create([
+            'name' => $input['name'],
+            'mobile' => $input['mobile'],
+            'email' => $input['email'],
+            'password' => Hash::make($input['password']),
+            'busines_id' =>$Busines->id,
+        ]);
+####### Update data ######
+
+
+
+##### validation #######
+validation :
+ public function create(array $input)
+    {
+         Validator::make($input, [
+            'name'   => ['required', 'string', 'max:255','min:10'],
+            'mobile' => ['required', 'string', 'max:15', 'unique:users'],
+            'email'  => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => 'min:6|required_with:password_confirmation|same:password_confirmation',
+
+        ],
+        [
+            'name.min'  =>'عفوا الإسم يجب ألا يقل عن 10 حروف !',
+            'mobile.unique' =>'عفوا رقم الموبيل مسجل بالفعل !',
+            'email.unique' =>' عفوا الإميل مستخدم قبل ذلك ! ',
+            'password.same' =>'كلمة المرور غير متطابقة !',
+            'password.min'  =>' كلمة المرور يجب ألا تقل عن 6 أحرف'
+        ]
+
+
+        )->validate();
+
+##### Update or creat new ######
+// If there's a flight from Oakland to San Diego, set the price to $99...
+// If no matching model exists, create one...
+$flight = App\Models\Flight::updateOrCreate(
+    ['departure' => 'Oakland', 'destination' => 'San Diego'],
+    ['price' => 99, 'discounted' => 1]
+);
+
+##### Deleting : ######
+            $flight = App\Models\Flight::find(1);
+            $flight->delete();
+
+            $clinic=clinic::findOrFail($request->clinicid)->delete();
+
+###### Deleting Models By Query :
+    $deletedRows = App\Models\Flight::where('active', 0)->delete();
